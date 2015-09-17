@@ -13,11 +13,13 @@ public class Card {
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
     }
 
+    protected boolean taken;
     protected Suit mySuit;
     protected Face myFace;
     
     //Constructor
     public Card(Suit theSuit, Face theFace){
+        taken = false;
         mySuit = theSuit;
         myRank = theRank;
     }
@@ -35,8 +37,19 @@ public class Card {
         return this.myFace.toString();
     }
 
+    //This method returns the Face and the Suit of the card as a single string instead of two seperate strings
     public String returnCard(){
-        return (myRank.toString() + " of " + mySuit.toString());
+        return (myFace.toString() + " of " + mySuit.toString());
+    }
+
+    //This method updates the card and say it is taken now
+    public void cardIsTaken(){
+        this.taken = true;
+    }
+    
+    //This method checks whether or not the card has been taken
+    public boolean returnTaken(){
+        return this.taken;
     }
 
 }//End of Card
