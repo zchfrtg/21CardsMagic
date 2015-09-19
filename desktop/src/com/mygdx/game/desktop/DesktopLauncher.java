@@ -8,5 +8,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new MagicTrick(), config);
+		config.title = "Title";
+		config.height = 600;
+		config.width = 800;
+		
 	}
 }

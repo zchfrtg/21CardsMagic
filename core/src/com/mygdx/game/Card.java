@@ -1,5 +1,10 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 //Created by Kenneth Adair in Group 3 Assignment 2
 public class Card {
 
@@ -16,12 +21,16 @@ public class Card {
     protected boolean taken;
     protected Suit mySuit;
     protected Face myFace;
+    private Sprite cardBack;
+    private Sprite cardFront;
     
     //Constructor
-    public Card(Suit theSuit, Face theFace){
+    public Card(Suit theSuit, Face theFace, Sprite cardSprite){
         taken = false;
         mySuit = theSuit;
-        myRank = theRank;
+        myFace = theFace;
+        this.cardBack = new Sprite(new Texture(Gdx.files.internal("cardBack.png")));
+        this.cardFront = cardSprite;
     }
     
     //This method returns the suit of the card as a string.  
@@ -51,5 +60,16 @@ public class Card {
     public boolean returnTaken(){
         return this.taken;
     }
+
+	public void draw(SpriteBatch batch) {
+		// Add sprite drawing here, temp for tesating
+		cardFront.draw(batch);
+		
+	}
+	
+	//This method is for positioning cards on the gameboard.
+	public void setPos(float x, float y){
+		cardFront.setPosition(x, y);
+	}
 
 }//End of Card
