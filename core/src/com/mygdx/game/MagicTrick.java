@@ -110,6 +110,7 @@ public class MagicTrick extends ApplicationAdapter {
 	private void testButtonPress() {
 		// This is just for testing
 		Texture cardSpriteSheet = new Texture("cards.png");
+		board = new Board();
 		deck = new Deck(cardSpriteSheet);
 		deck.shuffle();
 		Card[] drawnCards;

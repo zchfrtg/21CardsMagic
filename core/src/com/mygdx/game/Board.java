@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Board {
 
-	List<Column> columns = new ArrayList<Column>();
+	List<Column> columns;
 	
 	public Board(){
+		columns = new ArrayList<Column>();
 		for(int i = 1; i < 4; i++)
 			columns.add(new Column(i));
 	}
