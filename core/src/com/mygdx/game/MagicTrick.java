@@ -22,8 +22,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MagicTrick extends ApplicationAdapter {
+	public enum GamePhase{
+        TITLE_SCREEN, TITLE_PICK_CARD_TRANSITION, PICK_CARD,
+        PICK_CARD_SELECT_COLUMN_TRANSITION, SELECT_COLUMN,
+        REVEAL_CARD
+    }
+	
+	private Player player;
+	private Dealer dealer;
 	private Board board; 
 	private Deck deck;
+	private GamePhase phase = GamePhase.TITLE_SCREEN;
+	private float timer = 0f;
+	
+	//temp will remove this
 	private Boolean columnPhase = true;
 	
 	private SpriteBatch batch;  //sprites get added to a batch for faster drawing
@@ -43,6 +55,8 @@ public class MagicTrick extends ApplicationAdapter {
 		stage = new Stage();
 		
 		board = new Board();
+		player = new Player();
+		dealer = new Dealer();
 		
 		batch = new SpriteBatch();
 		background = new Texture("magicBackground.jpg");
@@ -84,13 +98,47 @@ public class MagicTrick extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(background, 0, 0);
-		board.draw(batch);
+		//Draw the cards whenever the phase is not the title screen or transition
+		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.TITLE_PICK_CARD_TRANSITION){
+			board.draw(batch);
+		} 
 		batch.end();
 		
-		Gdx.input.setInputProcessor(stage);
-		stage.draw();
+		//switch to the transition phase when the mouse is clicked if on the title screen
+		if(phase == GamePhase.TITLE_SCREEN && Gdx.input.justTouched()){
+			phase = GamePhase.TITLE_PICK_CARD_TRANSITION;
+		} 
+				
+		//wait 5 seconds before transitioning to the pick card phase
+		if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION && timer >= 2){
+			phase = GamePhase.PICK_CARD;
+			testButtonPress(); //same code from start game button
+			timer = 0f;
+		} else {
+			timer += Gdx.graphics.getDeltaTime();
+		}
 		
-		handleInput(Gdx.input.justTouched());
+		if(phase == GamePhase.PICK_CARD && Gdx.input.justTouched() && true) //Placeholder for player.getHasSelected to move to the select column phase
+		{
+			phase = GamePhase.SELECT_COLUMN;
+		} //else nothing, wait for player to click to say he is ready
+		
+		if(phase == GamePhase.SELECT_COLUMN){
+			//Will refactor to remove the justTouched pass.  
+			//This was for card selection which doesn't need to happen
+			//Also this code will become player.SelectColumn
+			handleInput(Gdx.input.justTouched());  
+		}
+		
+		if(phase == GamePhase.REVEAL_CARD){
+			//placeholder for whatever happens when the card is revealed.
+		}
+		
+		//disabling to show that buttons are not needed
+		//Gdx.input.setInputProcessor(stage);
+		//stage.draw();
+		
+		//handleInput(Gdx.input.justTouched());
 	}
 	
 	private TextButton getButton(String buttonText, int xPosition,
