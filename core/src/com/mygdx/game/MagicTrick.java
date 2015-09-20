@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -37,7 +38,7 @@ public class MagicTrick extends ApplicationAdapter {
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false,800,400);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage = new Stage();
 		
 		board = new Board();
@@ -87,6 +88,10 @@ public class MagicTrick extends ApplicationAdapter {
 		
 		Gdx.input.setInputProcessor(stage);
 		stage.draw();
+		
+		if(Gdx.input.justTouched()){
+			handleInput();
+		}
 	}
 	
 	private TextButton getButton(String buttonText, int xPosition,
@@ -110,13 +115,22 @@ public class MagicTrick extends ApplicationAdapter {
 		Card[] drawnCards;
 		drawnCards = deck.random21();
 		float xPos = 180;
-		float yPos = 120;
+		float yPos = 400;
 		for(int i = 0; i < drawnCards.length; i++){
 			drawnCards[i].setPos(xPos * ((i%3) + 1), yPos);
 			board.addToColumn(i % 3, drawnCards[i]);
 			if(i%3 == 2)
-				yPos += 50;
+				yPos -= Card.CARD_HEIGHT/2;
 		}
+		
 		System.out.println("Test Button Pressed");
+	}
+	
+	private void handleInput(){
+		int x1 = Gdx.input.getX();
+		int y1 = Gdx.input.getY();
+		Vector3 input = new Vector3(x1, y1, 0);
+		camera.unproject(input);
+		board.columnClicked(input.x, input.y);
 	}
 }

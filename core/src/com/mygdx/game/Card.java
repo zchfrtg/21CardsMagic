@@ -18,6 +18,9 @@ public class Card {
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
     }
 
+    public static final int CARD_WIDTH = 71;
+    public static final int CARD_HEIGHT = 96;
+    
     protected boolean taken;
     protected Suit mySuit;
     protected Face myFace;
@@ -47,7 +50,7 @@ public class Card {
     }
 
     //This method returns the Face and the Suit of the card as a single string instead of two seperate strings
-    public String returnCard(){
+    public String toString(){
         return (myFace.toString() + " of " + mySuit.toString());
     }
 
@@ -70,6 +73,26 @@ public class Card {
 	//This method is for positioning cards on the gameboard.
 	public void setPos(float x, float y){
 		cardFront.setPosition(x, y);
+	}
+
+	public void checkClicks(float x, float y) {
+		if(cardFront.getBoundingRectangle().contains(x, y))
+			System.out.println("" + mySuit + myFace);
+		
+	}
+
+	public void printXY() {
+		System.out.println("Width " + cardFront.getWidth());
+		System.out.println("Height " + cardFront.getHeight());
+		
+	}
+
+	public float getX() {
+		return cardFront.getX();
+	}
+	
+	public float getY(){
+		return cardFront.getY();
 	}
 
 }//End of Card
