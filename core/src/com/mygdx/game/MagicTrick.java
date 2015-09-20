@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MagicTrick extends ApplicationAdapter {
 	private Board board; 
 	private Deck deck;
+	private Boolean columnPhase = true;
 	
 	private SpriteBatch batch;  //sprites get added to a batch for faster drawing
 	private OrthographicCamera camera; //camera for rendering
@@ -89,9 +90,7 @@ public class MagicTrick extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(stage);
 		stage.draw();
 		
-		if(Gdx.input.justTouched()){
-			handleInput();
-		}
+		handleInput(Gdx.input.justTouched());
 	}
 	
 	private TextButton getButton(String buttonText, int xPosition,
@@ -127,11 +126,12 @@ public class MagicTrick extends ApplicationAdapter {
 		System.out.println("Test Button Pressed");
 	}
 	
-	private void handleInput(){
+	private void handleInput(Boolean clicked){
 		int x1 = Gdx.input.getX();
 		int y1 = Gdx.input.getY();
 		Vector3 input = new Vector3(x1, y1, 0);
 		camera.unproject(input);
-		board.columnClicked(input.x, input.y);
+		if(columnPhase)
+			board.columnClicked(input.x, input.y, clicked);
 	}
 }

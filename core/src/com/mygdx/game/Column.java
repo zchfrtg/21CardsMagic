@@ -3,16 +3,23 @@ package com.mygdx.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Column {
 
 	private int id;
 	List<Card> cards = new ArrayList<Card>();
+	Sprite highlight;
+	Boolean drawHighlight = false;
 	
 	public Column(int id)
 	{
 		this.id = id;
+		highlight = new Sprite(new Texture(Gdx.files.internal("ColumnHighlight.png")));
+		highlight.setPosition((180*id) - 4, 110);
 	}
 	
 	public void addCard(Card card)
@@ -23,9 +30,11 @@ public class Column {
 	public void draw(SpriteBatch batch) {
 		for(Card c : cards)
 			c.draw(batch);
+		if(drawHighlight)
+			highlight.draw(batch);
 	}
 
-	public void checkClicks(float x, float y) {
+	public void checkClicks(float x, float y, Boolean clicked) {
 		//Need to figure out how to return the column clicked on
 		//This would be a click between the sprites location at index 6
 		//and the sprites location at index 0 + height/width.
@@ -42,8 +51,11 @@ public class Column {
 				cardClicked = 1;
 			//reverse the numbers
 			cardClicked = 8 - cardClicked;
-			System.out.println(cards.get(cardClicked - 1).toString() + " in COLUMN " + id);
-		}
+			if(clicked)
+				System.out.println(cards.get(cardClicked - 1).toString() + " in COLUMN " + id);
+			drawHighlight = true;
+		} else
+			drawHighlight = false;
 	}
 
 	public boolean exists() {

@@ -25,11 +25,11 @@ public class Board {
 			c.draw(batch);
 	}
 
-	public void columnClicked(float x, float y) {
+	public void columnClicked(float x, float y, Boolean clicked) {
 		//check to see if columns have been delt
 		if(columns.get(0).exists())
 		for(Column c : columns)
-			c.checkClicks(x, y);
+			c.checkClicks(x, y, clicked);
 		
 	}
 
