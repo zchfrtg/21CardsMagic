@@ -38,6 +38,8 @@ public class MagicTrick extends ApplicationAdapter {
 	//temp will remove this
 	private Boolean columnPhase = true;
 	
+	private BitmapFont font;
+	
 	private SpriteBatch batch;  //sprites get added to a batch for faster drawing
 	private OrthographicCamera camera; //camera for rendering
 	
@@ -57,6 +59,9 @@ public class MagicTrick extends ApplicationAdapter {
 		board = new Board();
 		player = new Player();
 		dealer = new Dealer();
+		
+		font = new BitmapFont(Gdx.files.internal("magic.fnt"));
+		
 		
 		batch = new SpriteBatch();
 		background = new Texture("magicBackground.jpg");
@@ -96,12 +101,15 @@ public class MagicTrick extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		batch.begin();
 		batch.draw(background, 0, 0);
 		//Draw the cards whenever the phase is not the title screen or transition
 		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.TITLE_PICK_CARD_TRANSITION){
 			board.draw(batch);
-		} 
+		} else {
+			font.draw(batch, "This is a test", 200, 300);
+		}
 		batch.end();
 		
 		//switch to the transition phase when the mouse is clicked if on the title screen
@@ -114,7 +122,7 @@ public class MagicTrick extends ApplicationAdapter {
 			phase = GamePhase.PICK_CARD;
 			testButtonPress(); //same code from start game button
 			timer = 0f;
-		} else {
+		} else if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION){
 			timer += Gdx.graphics.getDeltaTime();
 		}
 		
