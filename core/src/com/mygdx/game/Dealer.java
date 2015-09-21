@@ -34,12 +34,13 @@ public class Dealer {
 		}
 	}
 	
-	public void revealCard(){
-		
+	public Card revealCard(){
+		return selected21.get(10);
 	}
 	
-	public void pickupCards(int columnNumber)
+	public void pickupCards()
 	{
+		int columnNumber = player.getColumnSelected();
 		selected21.clear();
 		Column column;
 		switch (columnNumber) {
@@ -89,13 +90,7 @@ public class Dealer {
 		
 	}
 	
-//	public static void main(String args[])
-//	{
-//		Card[] drawnCards;
-//		Texture cardSpriteSheet = new Texture("cards.png");
-//		Deck deck = new Deck(cardSpriteSheet);
-//		drawnCards = deck.random21();
-//		new Board board;
-//		new Dealer(board, deck, player);
-//	}
+	public static void main(String args[])
+	{
+	}
 }

@@ -186,8 +186,6 @@ public class MagicTrick extends ApplicationAdapter {
 //			if(i%3 == 2)
 //				yPos -= Card.CARD_HEIGHT/2;
 		dealer.deal();
-		
-		
 		System.out.println("Test Button Pressed");
 	}
 	
