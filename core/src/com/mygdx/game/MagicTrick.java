@@ -61,7 +61,7 @@ public class MagicTrick extends ApplicationAdapter {
 		
 		board = new Board();
 		player = new Player();
-		dealer = new Dealer();
+		
 		
 		font = new BitmapFont(Gdx.files.internal("magic.fnt"));
 		updateMessage("CLICK ANYWHERE TO BEGIN");
@@ -73,6 +73,7 @@ public class MagicTrick extends ApplicationAdapter {
 		//split and added to each card
 		Texture cardSpriteSheet = new Texture("cards.png");
 		deck = new Deck(cardSpriteSheet);
+		dealer = new Dealer(board, deck, player);
 		
 		//This has something to do with button setup.  copyright someone in group 4 Assignment 1
 		skin = new Skin();
@@ -171,20 +172,21 @@ public class MagicTrick extends ApplicationAdapter {
 	
 	private void testButtonPress() {
 		// This is just for testing
-		Texture cardSpriteSheet = new Texture("cards.png");
-		board = new Board();
-		deck = new Deck(cardSpriteSheet);
-		deck.shuffle();
-		Card[] drawnCards;
-		drawnCards = deck.random21();
-		float xPos = 180;
-		float yPos = 400;
-		for(int i = 0; i < drawnCards.length; i++){
-			drawnCards[i].setPos(xPos * ((i%3) + 1), yPos);
-			board.addToColumn(i % 3, drawnCards[i]);
-			if(i%3 == 2)
-				yPos -= Card.CARD_HEIGHT/2;
-		}
+//		Texture cardSpriteSheet = new Texture("cards.png");
+//		board = new Board();
+//		deck = new Deck(cardSpriteSheet);
+//		deck.shuffle();
+//		Card[] drawnCards;
+//		drawnCards = deck.random21();
+//		float xPos = 180;
+//		float yPos = 400;
+//		for(int i = 0; i < drawnCards.length; i++){
+//			drawnCards[i].setPos(xPos * ((i%3) + 1), yPos);
+//			board.addToColumn(i % 3, drawnCards[i]);
+//			if(i%3 == 2)
+//				yPos -= Card.CARD_HEIGHT/2;
+		dealer.deal();
+		
 		
 		System.out.println("Test Button Pressed");
 	}
