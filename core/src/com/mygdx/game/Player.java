@@ -18,10 +18,12 @@ public class Player {
 	{
 		hasSelectedCard = true;
 	}
+	
 	public boolean getHasSelectedCard()
 	{
 		return hasSelectedCard;
 	}
+	
 	public int getColumnSelected()
 	{
 		return columnSelected;

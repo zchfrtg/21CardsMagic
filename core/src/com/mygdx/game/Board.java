@@ -11,8 +11,9 @@ public class Board {
 	
 	public Board(){
 		columns = new ArrayList<Column>();
-		for(int i = 1; i < 4; i++)
+		for(int i = 1; i < 4; i++){
 			columns.add(new Column(i));
+		}
 	}
 	
 	public void addToColumn(int columnId, Card card)
@@ -21,18 +22,19 @@ public class Board {
 	}
 	
 	public void draw(SpriteBatch batch){
-		for(Column c : columns)
+		for(Column c : columns){
 			c.draw(batch);
+		}
 	}
 
 	public void columnClicked(float x, float y, Boolean clicked) {
-		//check to see if columns have been delt
+		//check to see if columns have been dealt
 		if(columns.get(0).exists())
-		for(Column c : columns)
+		for(Column c : columns){
 			c.checkClicks(x, y, clicked);
-		
+		}	
 	}
-	
+		
 	public Column getColumn(int i)
 	{
 		return columns.get(i);
