@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,6 +40,8 @@ public class MagicTrick extends ApplicationAdapter {
 	private Boolean columnPhase = true;
 	
 	private BitmapFont font;
+	private String text;
+	private float messageCenter;
 	
 	private SpriteBatch batch;  //sprites get added to a batch for faster drawing
 	private OrthographicCamera camera; //camera for rendering
@@ -61,7 +64,7 @@ public class MagicTrick extends ApplicationAdapter {
 		dealer = new Dealer();
 		
 		font = new BitmapFont(Gdx.files.internal("magic.fnt"));
-		
+		updateMessage("CLICK ANYWHERE TO BEGIN");
 		
 		batch = new SpriteBatch();
 		background = new Texture("magicBackground.jpg");
@@ -105,30 +108,34 @@ public class MagicTrick extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		//Draw the cards whenever the phase is not the title screen or transition
-		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.TITLE_PICK_CARD_TRANSITION){
+		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.TITLE_PICK_CARD_TRANSITION)
 			board.draw(batch);
-		} else {
-			font.draw(batch, "This is a test", 200, 300);
-		}
+		font.draw(batch, text, messageCenter, 80);
+		
+
 		batch.end();
 		
 		//switch to the transition phase when the mouse is clicked if on the title screen
 		if(phase == GamePhase.TITLE_SCREEN && Gdx.input.justTouched()){
 			phase = GamePhase.TITLE_PICK_CARD_TRANSITION;
+			updateMessage("PREPARE TO BE AMAZED!");
 		} 
 				
 		//wait 5 seconds before transitioning to the pick card phase
 		if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION && timer >= 2){
 			phase = GamePhase.PICK_CARD;
+			player.pickCard();
+			updateMessage("PICK A CARD AND CLICK");
 			testButtonPress(); //same code from start game button
 			timer = 0f;
 		} else if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION){
 			timer += Gdx.graphics.getDeltaTime();
 		}
 		
-		if(phase == GamePhase.PICK_CARD && Gdx.input.justTouched() && true) //Placeholder for player.getHasSelected to move to the select column phase
+		if(phase == GamePhase.PICK_CARD && Gdx.input.justTouched() && player.getHasSelectedCard()) //Placeholder for player.getHasSelected to move to the select column phase
 		{
 			phase = GamePhase.SELECT_COLUMN;
+			updateMessage("SELECT A COLUMN");
 		} //else nothing, wait for player to click to say he is ready
 		
 		if(phase == GamePhase.SELECT_COLUMN){
@@ -190,4 +197,13 @@ public class MagicTrick extends ApplicationAdapter {
 		if(columnPhase)
 			board.columnClicked(input.x, input.y, clicked);
 	}
+	
+	private void updateMessage(String m){
+		text = m;
+		GlyphLayout glyphLayout = new GlyphLayout();
+		glyphLayout.setText(font, text);
+		float w = glyphLayout.width;
+		messageCenter = (Gdx.graphics.getWidth()/2) - (w/2);
+	}
+
 }
