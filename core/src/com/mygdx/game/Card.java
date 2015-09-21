@@ -19,13 +19,16 @@ public class Card {
     }
 
     public static final int CARD_WIDTH = 71;
-    public static final int CARD_HEIGHT = 96;
+    public static final int CARD_HEIGHT = 95;
     
     protected boolean taken;
     protected Suit mySuit;
     protected Face myFace;
     private Sprite cardBack;
     private Sprite cardFront;
+    
+    private float targetX;
+    private float targetY;
     
     //Constructor
     public Card(Suit theSuit, Face theFace, Sprite cardSprite){
@@ -65,7 +68,8 @@ public class Card {
     }
 
 	public void draw(SpriteBatch batch) {
-		// Add sprite drawing here, temp for tesating
+		// Add sprite drawing here, temp for testing
+		this.slide(targetX, targetY);
 		cardFront.draw(batch);
 		
 	}
@@ -93,6 +97,46 @@ public class Card {
 	
 	public float getY(){
 		return cardFront.getY();
+	}
+	
+	public void slide(float targetXPos, float targetYPos){
+		float currentX = cardFront.getX();
+		float currentY = cardFront.getY();
+		float deltaTime = Gdx.graphics.getDeltaTime();
+		float speed = deltaTime * 150;
+		float movementX;
+		float movementY;
+		
+		//x movement
+		if(currentX < targetXPos){
+			movementX = (currentX + speed);
+		}
+		else {
+			movementX = targetXPos;
+		}
+		
+		//y movement
+		if(currentY > targetYPos){
+			movementY = (currentY - speed);
+		}
+		else {
+			movementY = targetYPos;
+		}
+		
+		
+		
+		//float movementY = (targetYPos - cardFront.getY());
+		
+		cardFront.setPosition(movementX, movementY);
+	
+		
+		
+	}
+
+
+	public void setTargets(float targetX, float targetY) {
+		this.targetX = targetX;
+		this.targetY = targetY;
 	}
 
 }//End of Card

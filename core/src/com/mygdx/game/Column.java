@@ -53,6 +53,7 @@ public class Column {
 			cardClicked = 8 - cardClicked;
 			if(clicked)
 				System.out.println(cards.get(cardClicked - 1).toString() + " in COLUMN " + id);
+			
 			drawHighlight = true;
 		} else
 			drawHighlight = false;
@@ -60,9 +61,11 @@ public class Column {
 
 	public boolean exists() {
 		//check to see if the cards array has cards in it
-		if(cards.isEmpty())
-			return false;
-		else 
-			return true;
+//is this backwards?
+		return cards.isEmpty() ? false:true;
+//		if(cards.isEmpty())
+//			return false;
+//		else 
+//			return true;
 	}
 }

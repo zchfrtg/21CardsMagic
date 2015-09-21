@@ -74,31 +74,7 @@ public class MagicTrick extends ApplicationAdapter {
 		Texture cardSpriteSheet = new Texture("cards.png");
 		deck = new Deck(cardSpriteSheet);
 		dealer = new Dealer(board, deck, player);
-		
-		//This has something to do with button setup.  copyright someone in group 4 Assignment 1
-		skin = new Skin();
-		Pixmap pixmap = new Pixmap(100, 50, Format.RGBA8888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		BitmapFont bitmapfont = new BitmapFont();
-		skin.add("default", bitmapfont);
-		skin.add("buttonDown", new Texture(Gdx.files.internal("btnDown.png")));
-		skin.add("buttonUp", new Texture(Gdx.files.internal("btnUp.png")));
-		skin.add("textFieldSkin", new Texture(pixmap));
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("buttonUp"); 
-		textButtonStyle.down = skin.newDrawable("buttonDown"); 
-		textButtonStyle.font = skin.getFont("default");
-		//end button setup
-		
-		//This make each individual button
-		buttonMap.put("testButton", new Runnable() {
-			public void run() {
-				testButtonPress();
-			}
-		});
-		final TextButton testButton = getButton("Test Button", 20, 20, "testButton", textButtonStyle);
-		stage.addActor(testButton);
+
 	}
 
 	@Override
@@ -109,7 +85,7 @@ public class MagicTrick extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		//Draw the cards whenever the phase is not the title screen or transition
-		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.TITLE_PICK_CARD_TRANSITION)
+		if(phase != GamePhase.TITLE_SCREEN)
 			board.draw(batch);
 		font.draw(batch, text, messageCenter, 80);
 		
@@ -120,14 +96,14 @@ public class MagicTrick extends ApplicationAdapter {
 		if(phase == GamePhase.TITLE_SCREEN && Gdx.input.justTouched()){
 			phase = GamePhase.TITLE_PICK_CARD_TRANSITION;
 			updateMessage("PREPARE TO BE AMAZED!");
+			startGame(); //same code from start game button
 		} 
 				
 		//wait 5 seconds before transitioning to the pick card phase
-		if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION && timer >= 2){
+		if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION && timer >= 4){
 			phase = GamePhase.PICK_CARD;
 			player.pickCard();
 			updateMessage("PICK A CARD AND CLICK");
-			testButtonPress(); //same code from start game button
 			timer = 0f;
 		} else if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION){
 			timer += Gdx.graphics.getDeltaTime();
@@ -170,23 +146,9 @@ public class MagicTrick extends ApplicationAdapter {
 		return button;
 	}
 	
-	private void testButtonPress() {
-		// This is just for testing
-//		Texture cardSpriteSheet = new Texture("cards.png");
-//		board = new Board();
-//		deck = new Deck(cardSpriteSheet);
-//		deck.shuffle();
-//		Card[] drawnCards;
-//		drawnCards = deck.random21();
-//		float xPos = 180;
-//		float yPos = 400;
-//		for(int i = 0; i < drawnCards.length; i++){
-//			drawnCards[i].setPos(xPos * ((i%3) + 1), yPos);
-//			board.addToColumn(i % 3, drawnCards[i]);
-//			if(i%3 == 2)
-//				yPos -= Card.CARD_HEIGHT/2;
+	private void startGame() {
 		dealer.deal();
-		System.out.println("Test Button Pressed");
+		System.out.println("Magic has begun");
 	}
 	
 	private void handleInput(Boolean clicked){

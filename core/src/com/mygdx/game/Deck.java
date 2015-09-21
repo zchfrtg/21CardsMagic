@@ -14,10 +14,12 @@ import java.util.Random;
 
 public class Deck extends ArrayList<Card>{
     private ArrayList<Card> theDeck;
-    //private ArrayList<Card> twentyOneCards;
     
     //holds the spriteSheet for cards
     private final Sprite[] cardSprites;
+    
+    //used for animation of the cards
+    private float elapsedTime = 0f;
 
     public Deck(Texture cardTexture){
     	cardSprites = new Sprite[52];
