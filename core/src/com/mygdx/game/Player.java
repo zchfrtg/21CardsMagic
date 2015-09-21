@@ -1,17 +1,29 @@
 package com.mygdx.game;
 
 public class Player {
-	private Card hasSelectedCard;
+	private boolean hasSelectedCard;
+	private int columnSelected;
 	
-	public Player(){
-		
+	public Player()
+	{
+		hasSelectedCard = false;
 	}
 	
-	public void indicateColumn(){
-		
+	public void indicateColumn(int column)
+	{
+		columnSelected = column;
 	}
 	
-	public void pickCard(){
-		
+	public void pickCard()
+	{
+		hasSelectedCard = true;
+	}
+	public boolean getHasSelectedCard()
+	{
+		return hasSelectedCard;
+	}
+	public int getColumnSelected()
+	{
+		return columnSelected;
 	}
 }
