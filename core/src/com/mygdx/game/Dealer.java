@@ -1,93 +1,96 @@
 package com.mygdx.game;
 
-import java.util.Stack;
+import com.badlogic.gdx.graphics.Texture;
 
 public class Dealer {
 
+	
 	private int dealNumber = 0;
-	private Stack<Card> firstColumn;
-	private Stack<Card> secondColumn;
-	private Stack<Card> thirdColumn;
+	private Board board;
+	private Deck selected21;
+	private Player player;
 	
-	public Dealer()
-	{
-		firstColumn = new Stack<Card>();
-		secondColumn = new Stack<Card>();
-		thirdColumn = new Stack<Card>();
+	public Dealer(Board board, Deck deck, Player player){
+		this.board = board;
+		this.selected21 = deck;
+		deck.shuffle();
+		this.player = player;
 	}
+//	public Dealer()
+//	{
+//		
+//	}
 	
-	public void deal(Stack<Card> deck)
-	{
-		for (int i = deck.size(); i > 0; i=i-3)
+	public void deal(){
+		float xPos = 180;
+		float yPos = 400;
+		
+		for(int i = 0; i < selected21.size(); i++)
 		{
-			firstColumn.add(deck.pop());
-			secondColumn.add(deck.pop());
-			thirdColumn.add(deck.pop());
+			selected21.get(i).setPos(xPos * ((i%3) + 1), yPos);
+			board.addToColumn(i % 3, selected21.get(i));
+			if(i%3 == 2)
+				yPos -= Card.CARD_HEIGHT/2;
 		}
-		dealNumber++;
 	}
 	
-	public void revealCard()
+	public Card revealCard(){
+		return selected21.get(10);
+	}
+	
+	public void pickupCards()
 	{
+		int columnNumber = player.getColumnSelected();
+		selected21.clear();
+		Column column;
+		switch (columnNumber) {
+		case 1:	column = board.getColumn(2);
+				for(int i = 0; i < 7; i++)
+					selected21.add(column.cards.get(i));
+				column = board.getColumn(1);
+				for(int i = 7; i < 14; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				column = board.getColumn(3);
+				for(int i = 14; i < 21; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				break;
+		case 2:	column = board.getColumn(1);
+				for(int i = 0; i < 7; i++)
+					selected21.add(column.cards.get(i));
+				column = board.getColumn(2);
+				for(int i = 7; i < 14; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				column = board.getColumn(3);
+				for(int i = 14; i < 21; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				break;
+		case 3: column = board.getColumn(1);
+				for(int i = 0; i < 7; i++)
+					selected21.add(column.cards.get(i));
+				column = board.getColumn(3);
+				for(int i = 7; i < 14; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				column = board.getColumn(2);
+				for(int i = 14; i < 21; i++)
+				{
+					selected21.add(column.cards.get(i));
+				}
+				break;
+		}
 		
 	}
 	
-	public Stack<Card> pickupCards(int deckSelected)
+	public static void main(String args[])
 	{
-		Stack<Card> newDeck = new Stack<Card>();
-		if(deckSelected == 1)
-		{
-			for(int i = secondColumn.size(); i > 0; i--)
-			{
-				newDeck.add(secondColumn.pop());
-			}
-			for(int i = firstColumn.size(); i > 0; i--)
-			{
-				newDeck.add(firstColumn.pop());
-			}
-			for(int i = thirdColumn.size(); i > 0; i--)
-			{
-				newDeck.add(thirdColumn.pop());
-			}
-		}
-		else if(deckSelected == 2)
-		{
-			for(int i = firstColumn.size(); i > 0; i--)
-			{
-				newDeck.add(firstColumn.pop());
-			}
-			for(int i = secondColumn.size(); i > 0; i--)
-			{
-				newDeck.add(secondColumn.pop());
-			}
-			for(int i = thirdColumn.size(); i > 0; i--)
-			{
-				newDeck.add(thirdColumn.pop());
-			}
-		}
-		else if(deckSelected == 3)
-		{
-			for(int i = firstColumn.size(); i > 0; i--)
-			{
-				newDeck.add(firstColumn.pop());
-			}
-			for(int i = thirdColumn.size(); i > 0; i--)
-			{
-				newDeck.add(thirdColumn.pop());
-			}
-			for(int i = secondColumn.size(); i > 0; i--)
-			{
-				newDeck.add(secondColumn.pop());
-			}
-		}
-		firstColumn.clear();
-		secondColumn.clear();
-		thirdColumn.clear();
-		return newDeck;
-	}
-
-	public int getDealNumber()
-	{
-		return dealNumber;
 	}
 }

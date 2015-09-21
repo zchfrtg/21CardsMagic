@@ -12,9 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Deck {
-    private List<Card> theDeck;
-    private Card[] twentyOneCards;
+public class Deck extends ArrayList<Card>{
+    private ArrayList<Card> theDeck;
+    //private ArrayList<Card> twentyOneCards;
     
     //holds the spriteSheet for cards
     private final Sprite[] cardSprites;
@@ -30,6 +30,8 @@ public class Deck {
 			}
 		}
 		hardCodeCards();
+		Collections.shuffle(theDeck);
+		random21();
     }
     //This creates an unshuffled deck of cards.
     private void hardCodeCards(){
@@ -72,12 +74,13 @@ public class Deck {
         }
     }//end of Hard code cards
 
-        //This method returns a single card from the hard-coded deck
-	private Card drawCard(){
-		Card c = theDeck.get(0);
-		theDeck.remove(0);
-		return c;
-	}//End of drawCard method
+    //this method does the same thing as theDeck.remove(0), we don't need it
+//        //This method returns a single card from the hard-coded deck
+//	private Card drawCard(){
+//		Card c = theDeck.get(0);
+//		theDeck.remove(0);
+//		return c;
+//	}//End of drawCard method
 
     public void shuffle(){
 //        hardCodeCards();
@@ -86,19 +89,20 @@ public class Deck {
 //        for(int i = 0; i < 52; i++){
 //            shuffledDeck[i] = drawCard();
 //        }
-    	Collections.shuffle(theDeck);
+    	//making this shuffle the twentyOneCards makes it so once you pick the 21 cards, the rest of the deck can be thrown away.
+    	Collections.shuffle(this);
     }//end of shuffle() method
     
     //We may want to change this later.  
     //Basically this method just returns an 
     //array of 21 cards drawn from the top of the shuffled deck.
-    public Card[] random21(){
-        twentyOneCards = new Card[21];
+    public void random21(){
+//        twentyOneCards = new ArrayList<Card>();
         for(int i = 0; i < 21; i++){
 //            twentyOneCards[i] = shuffledDeck[i];
-        	twentyOneCards[i] = drawCard();
+        	this.add(theDeck.remove(0));
         }
-        return twentyOneCards;
     }
+    
     
 }

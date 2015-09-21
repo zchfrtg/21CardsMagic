@@ -32,5 +32,10 @@ public class Board {
 			c.checkClicks(x, y, clicked);
 		
 	}
+	
+	public Column getColumn(int i)
+	{
+		return columns.get(i);
+	}
 
 }
