@@ -61,4 +61,8 @@ public class Dealer {
 			selected21.add(two.getNextCard());
 	
 	}
+	
+	public void resetDealNumber(){
+		dealNumber = 0;
+	}
 }

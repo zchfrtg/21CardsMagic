@@ -125,8 +125,9 @@ public class MagicTrick extends ApplicationAdapter {
 			
 			handleInput(Gdx.input.justTouched()); 
 			if(player.getColumnSelected() != -1){
-				if(dealer.dealNumber() > 3)
+				if(dealer.dealNumber() > 3){
 					phase = GamePhase.REVEAL_CARD;
+				}
 				else {
 					dealer.pickupCards();
 					dealer.deal();
@@ -138,6 +139,9 @@ public class MagicTrick extends ApplicationAdapter {
 		
 		if(phase == GamePhase.REVEAL_CARD){
 			updateMessage("ARE YOU AMAZED?");
+			if(Gdx.input.justTouched()){
+				resetGame();
+			}
 		}
 	}
 	
@@ -174,6 +178,16 @@ public class MagicTrick extends ApplicationAdapter {
 		glyphLayout.setText(font, text);
 		float w = glyphLayout.width;
 		messageCenter = (Gdx.graphics.getWidth()/2) - (w/2);
+	}
+	
+	private void resetGame(){
+		phase = GamePhase.TITLE_SCREEN;
+		updateMessage("CLICK ANYWHERE TO BEGIN");
+		board = new Board();
+		player = new Player();
+		Texture cardSpriteSheet = new Texture("cards.png");
+		deck = new Deck(cardSpriteSheet);
+		dealer = new Dealer(board, deck, player);
 	}
 
 }
