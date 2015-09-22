@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 public class Player {
 	private boolean hasSelectedCard;
-	private int columnSelected;
+	private int columnSelected = -1;
 	
 	public Player()
 	{
@@ -28,4 +28,10 @@ public class Player {
 	{
 		return columnSelected;
 	}
+	
+	public void setColumnSelected(int columnId){
+		columnSelected = columnId;
+	}
+	
+
 }

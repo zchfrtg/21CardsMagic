@@ -33,8 +33,12 @@ public class Column {
 		if(drawHighlight)
 			highlight.draw(batch);
 	}
+	
+	public void drawReveal(SpriteBatch batch){
+		cards.get(3).draw(batch);
+	}
 
-	public void checkClicks(float x, float y, Boolean clicked) {
+	public void checkClicks(float x, float y, Boolean clicked, Player player) {
 		//Need to figure out how to return the column clicked on
 		//This would be a click between the sprites location at index 6
 		//and the sprites location at index 0 + height/width.
@@ -51,8 +55,9 @@ public class Column {
 				cardClicked = 1;
 			//reverse the numbers
 			cardClicked = 8 - cardClicked;
-			if(clicked)
-				System.out.println(cards.get(cardClicked - 1).toString() + " in COLUMN " + id);
+			if(clicked){
+				player.setColumnSelected(id);
+			}
 			
 			drawHighlight = true;
 		} else
@@ -67,5 +72,11 @@ public class Column {
 //			return false;
 //		else 
 //			return true;
+	}
+	
+	public Card getNextCard(){
+		Card c = cards.get(0);
+		cards.remove(0);
+		return c;
 	}
 }

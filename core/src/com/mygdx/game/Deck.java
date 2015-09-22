@@ -1,25 +1,16 @@
 package com.mygdx.game;
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Card;
-import com.mygdx.game.Card.Suit;
-import com.mygdx.game.Card.Face;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 public class Deck extends ArrayList<Card>{
     private ArrayList<Card> theDeck;
-    
-    //holds the spriteSheet for cards
     private final Sprite[] cardSprites;
-    
-    //used for animation of the cards
-    private float elapsedTime = 0f;
 
     public Deck(Texture cardTexture){
     	cardSprites = new Sprite[52];
@@ -76,32 +67,12 @@ public class Deck extends ArrayList<Card>{
         }
     }//end of Hard code cards
 
-    //this method does the same thing as theDeck.remove(0), we don't need it
-//        //This method returns a single card from the hard-coded deck
-//	private Card drawCard(){
-//		Card c = theDeck.get(0);
-//		theDeck.remove(0);
-//		return c;
-//	}//End of drawCard method
-
     public void shuffle(){
-//        hardCodeCards();
-//        Collections.shuffle(theDeck);
-//        shuffledDeck = new Card[52];
-//        for(int i = 0; i < 52; i++){
-//            shuffledDeck[i] = drawCard();
-//        }
-    	//making this shuffle the twentyOneCards makes it so once you pick the 21 cards, the rest of the deck can be thrown away.
     	Collections.shuffle(this);
-    }//end of shuffle() method
-    
-    //We may want to change this later.  
-    //Basically this method just returns an 
-    //array of 21 cards drawn from the top of the shuffled deck.
+    }
+
     public void random21(){
-//        twentyOneCards = new ArrayList<Card>();
         for(int i = 0; i < 21; i++){
-//            twentyOneCards[i] = shuffledDeck[i];
         	this.add(theDeck.remove(0));
         }
     }

@@ -24,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MagicTrick extends ApplicationAdapter {
 	public enum GamePhase{
-        TITLE_SCREEN, TITLE_PICK_CARD_TRANSITION, PICK_CARD,
+        TITLE_SCREEN, TRANSITION1, PICK_CARD,
         PICK_CARD_SELECT_COLUMN_TRANSITION, SELECT_COLUMN,
         REVEAL_CARD
     }
@@ -84,8 +84,10 @@ public class MagicTrick extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		//Draw the cards whenever the phase is not the title screen or transition
-		if(phase != GamePhase.TITLE_SCREEN)
+		if(phase != GamePhase.TITLE_SCREEN && phase != GamePhase.REVEAL_CARD)
 			board.draw(batch);
+		else if (phase == GamePhase.REVEAL_CARD)
+			board.drawReveal(batch);
 		font.draw(batch, text, messageCenter, 80);
 		
 
@@ -93,18 +95,18 @@ public class MagicTrick extends ApplicationAdapter {
 		
 		//switch to the transition phase when the mouse is clicked if on the title screen
 		if(phase == GamePhase.TITLE_SCREEN && Gdx.input.justTouched()){
-			phase = GamePhase.TITLE_PICK_CARD_TRANSITION;
+			phase = GamePhase.TRANSITION1;
 			updateMessage("PREPARE TO BE AMAZED!");
 			startGame(); //same code from start game button
 		} 
 				
 		//wait 5 seconds before transitioning to the pick card phase
-		if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION && timer >= 4){
+		if (phase == GamePhase.TRANSITION1 && timer >= 4){
 			phase = GamePhase.PICK_CARD;
 			player.pickCard();
 			updateMessage("PICK A CARD AND CLICK");
 			timer = 0f;
-		} else if (phase == GamePhase.TITLE_PICK_CARD_TRANSITION){
+		} else if (phase == GamePhase.TRANSITION1){
 			timer += Gdx.graphics.getDeltaTime();
 		}
 		
@@ -118,18 +120,25 @@ public class MagicTrick extends ApplicationAdapter {
 			//Will refactor to remove the justTouched pass.  
 			//This was for card selection which doesn't need to happen
 			//Also this code will become player.SelectColumn
-			handleInput(Gdx.input.justTouched());  
+			if(dealer.dealNumber() > 3)
+				phase = GamePhase.REVEAL_CARD;
+			
+			handleInput(Gdx.input.justTouched()); 
+			if(player.getColumnSelected() != -1){
+				if(dealer.dealNumber() > 3)
+					phase = GamePhase.REVEAL_CARD;
+				else {
+					dealer.pickupCards();
+					dealer.deal();
+					player.setColumnSelected(-1);
+				}
+			}
+			
 		}
 		
 		if(phase == GamePhase.REVEAL_CARD){
-			//placeholder for whatever happens when the card is revealed.
+			updateMessage("ARE YOU AMAZED?");
 		}
-		
-		//disabling to show that buttons are not needed
-		//Gdx.input.setInputProcessor(stage);
-		//stage.draw();
-		
-		//handleInput(Gdx.input.justTouched());
 	}
 	
 	private TextButton getButton(String buttonText, int xPosition,
@@ -155,8 +164,8 @@ public class MagicTrick extends ApplicationAdapter {
 		int y1 = Gdx.input.getY();
 		Vector3 input = new Vector3(x1, y1, 0);
 		camera.unproject(input);
-		if(columnPhase)
-			board.columnClicked(input.x, input.y, clicked);
+		if(phase == GamePhase.SELECT_COLUMN)
+			board.columnClicked(input.x, input.y, clicked, player);
 	}
 	
 	private void updateMessage(String m){

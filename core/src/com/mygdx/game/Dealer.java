@@ -18,12 +18,13 @@ public class Dealer {
 		this.selected21 = deck;
 		deck.shuffle();
 		this.player = player;
+		
 	}
 	
 	public void deal(){
 		float xPos = 180;
 		float yPos = 400;
-		
+
 		for(int i = 0; i < selected21.size(); i++){			
 			selected21.get(i).setPos(180, 400);
 			selected21.get(i).setTargets(xPos * ((i%3) + 1), yPos);
@@ -34,61 +35,30 @@ public class Dealer {
 			if(i%3 == 2)
 				yPos -= Card.CARD_HEIGHT/2;
 		}
+		dealNumber++;
 	}
 	
 	public Card revealCard(){
 		return selected21.get(10);
 	}
 	
+	public int dealNumber(){
+		return dealNumber;
+	}
+	
 	public void pickupCards()
 	{
 		int columnNumber = player.getColumnSelected();
 		selected21.clear();
-		Column column;
-		switch (columnNumber) {
-		case 1:	column = board.getColumn(2);
-				for(int i = 0; i < 7; i++)
-					selected21.add(column.cards.get(i));
-				column = board.getColumn(1);
-				for(int i = 7; i < 14; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				column = board.getColumn(3);
-				for(int i = 14; i < 21; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				break;
-		case 2:	column = board.getColumn(1);
-				for(int i = 0; i < 7; i++)
-					selected21.add(column.cards.get(i));
-				column = board.getColumn(2);
-				for(int i = 7; i < 14; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				column = board.getColumn(3);
-				for(int i = 14; i < 21; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				break;
-		case 3: column = board.getColumn(1);
-				for(int i = 0; i < 7; i++)
-					selected21.add(column.cards.get(i));
-				column = board.getColumn(3);
-				for(int i = 7; i < 14; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				column = board.getColumn(2);
-				for(int i = 14; i < 21; i++)
-				{
-					selected21.add(column.cards.get(i));
-				}
-				break;
-		}
-		
+		Column selected = board.getColumn(columnNumber);
+		Column one = board.getNextColumn();
+		Column two = board.getNextColumn();
+		for(int i = 0; i < 7; i++)
+			selected21.add(one.getNextCard());
+		for(int i = 0; i < 7; i++)
+			selected21.add(selected.getNextCard());
+		for(int i = 0; i < 7; i++)
+			selected21.add(two.getNextCard());
+	
 	}
 }
