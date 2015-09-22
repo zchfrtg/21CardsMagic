@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -48,16 +49,18 @@ public class MagicTrick extends ApplicationAdapter {
 	
 	private Texture background; //background texture
 	
-	private Stage stage; //Buttons get added to the stage
-	private Skin skin;
-	
-	private HashMap<String, Runnable> buttonMap = new HashMap<String, Runnable>();
+	private Sound bgMusic;
+	private Sound abra;
+	private Sound clickSound;
 	
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage();
+		bgMusic = Gdx.audio.newSound(Gdx.files.internal("music.wav"));
+		bgMusic.loop(0.2f);
+		abra = Gdx.audio.newSound(Gdx.files.internal("abra.mp3"));
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
 		
 		board = new Board();
 		player = new Player();
@@ -93,6 +96,10 @@ public class MagicTrick extends ApplicationAdapter {
 
 		batch.end();
 		
+		if(Gdx.input.justTouched()){
+			clickSound.play();
+		}
+		
 		//switch to the transition phase when the mouse is clicked if on the title screen
 		if(phase == GamePhase.TITLE_SCREEN && Gdx.input.justTouched()){
 			phase = GamePhase.TRANSITION1;
@@ -120,44 +127,29 @@ public class MagicTrick extends ApplicationAdapter {
 			//Will refactor to remove the justTouched pass.  
 			//This was for card selection which doesn't need to happen
 			//Also this code will become player.SelectColumn
-			if(dealer.dealNumber() > 3)
+			if(dealer.dealNumber() > 3){
 				phase = GamePhase.REVEAL_CARD;
+				abra.play();
+			}
 			
 			handleInput(Gdx.input.justTouched()); 
 			if(player.getColumnSelected() != -1){
-				if(dealer.dealNumber() > 3){
-					phase = GamePhase.REVEAL_CARD;
-				}
-				else {
-					dealer.pickupCards();
-					dealer.deal();
-					player.setColumnSelected(-1);
-				}
+				dealer.pickupCards();
+				dealer.deal();
+				player.setColumnSelected(-1);
 			}
 			
 		}
 		
 		if(phase == GamePhase.REVEAL_CARD){
-			updateMessage("ARE YOU AMAZED?");
+			updateMessage("ARE YOU AMAZED NOW?");
 			if(Gdx.input.justTouched()){
 				resetGame();
 			}
 		}
 	}
 	
-	private TextButton getButton(String buttonText, int xPosition,
-			int yPosition, final String id, TextButtonStyle textButtonStyle) {
-		TextButton button = new TextButton(buttonText, textButtonStyle);
-		button.setPosition(xPosition, yPosition);
 
-		button.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				buttonMap.get(id).run();
-			}
-		});
-		return button;
-	}
-	
 	private void startGame() {
 		dealer.deal();
 		System.out.println("Magic has begun");
