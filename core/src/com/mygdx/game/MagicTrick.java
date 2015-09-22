@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.sun.glass.events.WindowEvent;
 
 public class MagicTrick extends ApplicationAdapter {
 	public enum GamePhase{
@@ -97,7 +98,7 @@ public class MagicTrick extends ApplicationAdapter {
 		batch.end();
 		
 		if(Gdx.input.justTouched()){
-			clickSound.play();
+			clickSound.play(.2f);
 		}
 		
 		//switch to the transition phase when the mouse is clicked if on the title screen
@@ -148,6 +149,13 @@ public class MagicTrick extends ApplicationAdapter {
 			}
 		}
 	}
+	@Override
+	public void dispose(){
+		//properly ends the sounds
+		clickSound.dispose();
+		abra.dispose();
+		bgMusic.dispose();
+	}
 	
 
 	private void startGame() {
@@ -181,5 +189,5 @@ public class MagicTrick extends ApplicationAdapter {
 		deck = new Deck(cardSpriteSheet);
 		dealer = new Dealer(board, deck, player);
 	}
-
+	
 }
