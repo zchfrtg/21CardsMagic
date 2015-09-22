@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -22,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.sun.glass.events.WindowEvent;
 
 public class MagicTrick extends ApplicationAdapter {
 	public enum GamePhase{
@@ -51,7 +51,8 @@ public class MagicTrick extends ApplicationAdapter {
 	private Texture background; //background texture
 	
 	private Sound bgMusic;
-	private Sound abra;
+	private Sound abra;			//Zach's creepy voice
+	private Sound abraSong;		//Steve Miller's Band
 	private Sound clickSound;
 	
 	@Override
@@ -59,8 +60,9 @@ public class MagicTrick extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		bgMusic = Gdx.audio.newSound(Gdx.files.internal("music.wav"));
-		bgMusic.loop(0.2f);
+		bgMusic.loop(0.3f);
 		abra = Gdx.audio.newSound(Gdx.files.internal("abra.mp3"));
+		abraSong = Gdx.audio.newSound(Gdx.files.internal("abraSong.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
 		
 		board = new Board();
@@ -130,7 +132,7 @@ public class MagicTrick extends ApplicationAdapter {
 			//Also this code will become player.SelectColumn
 			if(dealer.dealNumber() > 3){
 				phase = GamePhase.REVEAL_CARD;
-				abra.play();
+				successSound();
 			}
 			
 			handleInput(Gdx.input.justTouched()); 
@@ -154,6 +156,7 @@ public class MagicTrick extends ApplicationAdapter {
 		//properly ends the sounds
 		clickSound.dispose();
 		abra.dispose();
+		abraSong.dispose();
 		bgMusic.dispose();
 	}
 	
@@ -188,6 +191,16 @@ public class MagicTrick extends ApplicationAdapter {
 		Texture cardSpriteSheet = new Texture("cards.png");
 		deck = new Deck(cardSpriteSheet);
 		dealer = new Dealer(board, deck, player);
+	}
+	
+	private void successSound(){
+		Random r = new Random();
+		if(r.nextInt(2) == 0) {			//the numbers 0 or 1
+			abra.play();				//creepy voice
+		} 
+		else {
+			abraSong.play();			//Steve Miller's Band
+		}
 	}
 	
 }
