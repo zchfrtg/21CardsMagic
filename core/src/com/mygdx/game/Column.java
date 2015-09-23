@@ -51,8 +51,9 @@ public class Column {
 			float bottomLeftY = cards.get(6).getY();
 			int cardClicked = (int) (y - bottomLeftY) / (Card.CARD_HEIGHT/2);
 			//last card is 1 or 0
-			if(cardClicked == 0)
+			if(cardClicked == 0){
 				cardClicked = 1;
+			}
 			//reverse the numbers
 			cardClicked = 8 - cardClicked;
 			if(clicked){
@@ -60,18 +61,14 @@ public class Column {
 			}
 			
 			drawHighlight = true;
-		} else
+		} else {
 			drawHighlight = false;
+		}
 	}
 
 	public boolean exists() {
 		//check to see if the cards array has cards in it
-//is this backwards?
 		return cards.isEmpty() ? false:true;
-//		if(cards.isEmpty())
-//			return false;
-//		else 
-//			return true;
 	}
 	
 	public Card getNextCard(){

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Card;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,14 +25,14 @@ public class Deck extends ArrayList<Card>{
 		Collections.shuffle(theDeck);
 		random21();
     }
+    
     //This creates an unshuffled deck of cards.
     private void hardCodeCards(){
         theDeck = new ArrayList<Card>();
 
-        //Cards are in the array in the order A-K and Clubs/Spades/Heart/Diamon
+        //Cards are in the array in the order A-K and Clubs/Spades/Heart/Diamond
         int nextSprite = 0;
-        for(int i = 0; i < 4; i++) //0-Clubs 1-Spades 2-heart 3-Diamond
-        {
+        for(int i = 0; i < 4; i++){ 						//0-Clubs 1-Spades 2-heart 3-Diamond
         	Card.Suit nextSuit;
         	switch(i){
         	case 0: nextSuit = Card.Suit.CLUBS; break;
@@ -41,8 +40,7 @@ public class Deck extends ArrayList<Card>{
         	case 2: nextSuit = Card.Suit.HEARTS; break;
         	default: nextSuit = Card.Suit.DIAMONDS; break;
         	}
-        	for(int j = 0; j < 13; j++) // 0=ace 12=King ect
-        	{
+        	for(int j = 0; j < 13; j++){ 					// 0=ace 12=King ect
         		Card.Face nextFace;
         		switch(j){
         		case 0: nextFace = Card.Face.ACE; break;
@@ -76,6 +74,4 @@ public class Deck extends ArrayList<Card>{
         	this.add(theDeck.remove(0));
         }
     }
-    
-    
 }

@@ -1,28 +1,16 @@
 package com.mygdx.game;
 
-import java.util.HashMap;
 import java.util.Random;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MagicTrick extends ApplicationAdapter {
 	public enum GamePhase{
@@ -31,6 +19,7 @@ public class MagicTrick extends ApplicationAdapter {
         REVEAL_CARD
     }
 	
+	//game play related objects
 	private Player player;
 	private Dealer dealer;
 	private Board board; 
@@ -38,9 +27,7 @@ public class MagicTrick extends ApplicationAdapter {
 	private GamePhase phase = GamePhase.TITLE_SCREEN;
 	private float timer = 0f;
 	
-	//temp will remove this
-	private Boolean columnPhase = true;
-	
+	//display related objects
 	private BitmapFont font;
 	private String text;
 	private float messageCenter;
@@ -50,6 +37,7 @@ public class MagicTrick extends ApplicationAdapter {
 	
 	private Texture background; //background texture
 	
+	//sound related objects
 	private Sound bgMusic;
 	private Sound abra;			//Zach's creepy voice
 	private Sound abraSong;		//Steve Miller's Band
@@ -96,7 +84,6 @@ public class MagicTrick extends ApplicationAdapter {
 			board.drawReveal(batch);
 		font.draw(batch, text, messageCenter, 80);
 		
-
 		batch.end();
 		
 		if(Gdx.input.justTouched()){
@@ -110,8 +97,8 @@ public class MagicTrick extends ApplicationAdapter {
 			startGame(); //same code from start game button
 		} 
 				
-		//wait 5 seconds before transitioning to the pick card phase
-		if (phase == GamePhase.TRANSITION1 && timer >= 4){
+		//wait 3 seconds before transition to Pick Card phase
+		if (phase == GamePhase.TRANSITION1 && timer >= 3){
 			phase = GamePhase.PICK_CARD;
 			player.pickCard();
 			updateMessage("PICK A CARD AND CLICK");
@@ -127,9 +114,6 @@ public class MagicTrick extends ApplicationAdapter {
 		} //else nothing, wait for player to click to say he is ready
 		
 		if(phase == GamePhase.SELECT_COLUMN){
-			//Will refactor to remove the justTouched pass.  
-			//This was for card selection which doesn't need to happen
-			//Also this code will become player.SelectColumn
 			if(dealer.dealNumber() > 3){
 				phase = GamePhase.REVEAL_CARD;
 				successSound();
@@ -152,15 +136,13 @@ public class MagicTrick extends ApplicationAdapter {
 		}
 	}
 	@Override
-	public void dispose(){
-		//properly ends the sounds
+	public void dispose(){					//properly ends the sounds
 		clickSound.dispose();
 		abra.dispose();
 		abraSong.dispose();
 		bgMusic.dispose();
 	}
 	
-
 	private void startGame() {
 		dealer.deal();
 		System.out.println("Magic has begun");

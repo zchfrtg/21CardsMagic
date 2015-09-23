@@ -24,7 +24,6 @@ public class Card {
     protected boolean taken;
     protected Suit mySuit;
     protected Face myFace;
-    private Sprite cardBack;
     private Sprite cardFront;
     
     private float targetX;
@@ -35,7 +34,6 @@ public class Card {
         taken = false;
         mySuit = theSuit;
         myFace = theFace;
-        this.cardBack = new Sprite(new Texture(Gdx.files.internal("cardBack.png")));
         this.cardFront = cardSprite;
     }
     
@@ -52,7 +50,7 @@ public class Card {
         return this.myFace.toString();
     }
 
-    //This method returns the Face and the Suit of the card as a single string instead of two seperate strings
+    //This method returns the Face and the Suit of the card as a single string instead of two separate strings
     public String toString(){
         return (myFace.toString() + " of " + mySuit.toString());
     }
@@ -69,12 +67,12 @@ public class Card {
 
 	public void draw(SpriteBatch batch) {
 		// Add sprite drawing here, temp for testing
-		this.slide(targetX, targetY);
+		this.slide(targetX, targetY);			//this is for the sliding animation
 		cardFront.draw(batch);
 		
 	}
 	
-	//This method is for positioning cards on the gameboard.
+	//This method is for positioning cards on the game board.
 	public void setPos(float x, float y){
 		cardFront.setPosition(x, y);
 	}
@@ -103,7 +101,7 @@ public class Card {
 		float currentX = cardFront.getX();
 		float currentY = cardFront.getY();
 		float deltaTime = Gdx.graphics.getDeltaTime();
-		float speed = deltaTime * 150;
+		float speed = deltaTime * 170;
 		float movementX;
 		float movementY;
 		
@@ -123,14 +121,7 @@ public class Card {
 			movementY = targetYPos;
 		}
 		
-		
-		
-		//float movementY = (targetYPos - cardFront.getY());
-		
 		cardFront.setPosition(movementX, movementY);
-	
-		
-		
 	}
 
 
