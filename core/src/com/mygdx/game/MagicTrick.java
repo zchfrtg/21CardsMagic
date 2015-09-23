@@ -26,6 +26,7 @@ public class MagicTrick extends ApplicationAdapter {
 	private Deck deck;
 	private GamePhase phase = GamePhase.TITLE_SCREEN;
 	private float timer = 0f;
+	private int previousRan = 0;
 	
 	//display related objects
 	private BitmapFont font;
@@ -41,6 +42,7 @@ public class MagicTrick extends ApplicationAdapter {
 	private Sound bgMusic;
 	private Sound abra;			//Zach's creepy voice
 	private Sound abraSong;		//Steve Miller's Band
+	private Sound magicSong;	//B.O.B's hit
 	private Sound clickSound;
 	
 	@Override
@@ -51,6 +53,7 @@ public class MagicTrick extends ApplicationAdapter {
 		bgMusic.loop(0.3f);
 		abra = Gdx.audio.newSound(Gdx.files.internal("abra.mp3"));
 		abraSong = Gdx.audio.newSound(Gdx.files.internal("abraSong.mp3"));
+		magicSong = Gdx.audio.newSound(Gdx.files.internal("magic.mp3"));
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
 		
 		board = new Board();
@@ -140,6 +143,7 @@ public class MagicTrick extends ApplicationAdapter {
 		clickSound.dispose();
 		abra.dispose();
 		abraSong.dispose();
+		magicSong.dispose();
 		bgMusic.dispose();
 	}
 	
@@ -177,11 +181,20 @@ public class MagicTrick extends ApplicationAdapter {
 	
 	private void successSound(){
 		Random r = new Random();
-		if(r.nextInt(2) == 0) {			//the numbers 0 or 1
+		int ranVar = r.nextInt(3);
+		if(ranVar == previousRan){		//will prevent the same success song from playing two turns in a row
+			ranVar = (ranVar+1)%3;
+		}
+		previousRan = ranVar;
+		System.out.println(ranVar);
+		if(ranVar == 0) {				
 			abra.play();				//creepy voice
 		} 
-		else {
+		else if(ranVar == 1) {
 			abraSong.play();			//Steve Miller's Band
+		}
+		else {
+			magicSong.play(); 			//BOB and Rivers 
 		}
 	}
 	
